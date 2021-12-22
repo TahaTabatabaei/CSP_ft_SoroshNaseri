@@ -18,15 +18,15 @@ public class AI_Project3 {
      * @param args the command line arguments
      */
 
-    public static int NegetivesInRows [] ;
-    public static int PositivesInRows [] ;
-    public static int NegetivesInCoulmn [] ;
-    public static int PositvesInCoulmn [] ;
-    public static int FirstTable [][] ;
-    public static Variable variables []  ; // change domain
-    public static int Coulmns ; 
+    public static int[] NegativesInRows;
+    public static int[] PositivesInRows;
+    public static int[] NegativesInColumns;
+    public static int[] PositiveInColumns;
+    public static int[][] FirstTable;
+    public static Variable[] variables; // change domain
+    public static int Columns;
     public static int Rows ;
-    public static pice TableOfValues[][] ; // copy begir!
+    public static piece[][] TableOfValues; // copy begir!
 
     public static void main(String[] args) {
         // TODO code application logic here
@@ -34,12 +34,12 @@ public class AI_Project3 {
 // Get the information ................................................................
         Scanner io = new Scanner(System.in) ;
         Rows = io.nextInt() ;
-        Coulmns = io.nextInt() ;
+        Columns = io.nextInt() ;
         
         PositivesInRows = new int [Rows] ;
-        PositvesInCoulmn = new int [Coulmns] ;
-        NegetivesInRows = new int [Rows] ;
-        NegetivesInCoulmn = new int [Coulmns] ;
+        PositiveInColumns = new int [Columns] ;
+        NegativesInRows = new int [Rows] ;
+        NegativesInColumns = new int [Columns] ;
         
         for(int i = 0 ; i < Rows ; i ++ ) {
             
@@ -48,40 +48,40 @@ public class AI_Project3 {
         }
         for(int i = 0 ; i < Rows ; i ++ ) {
             
-            NegetivesInRows[i] = io.nextInt() ;
+            NegativesInRows[i] = io.nextInt() ;
             
         }
         
-        for(int i = 0 ; i < Coulmns ; i++) {
+        for(int i = 0; i < Columns; i++) {
             
-            PositvesInCoulmn[i] = io.nextInt() ;
-            
-        }
-        
-         for(int i = 0 ; i < Coulmns ; i++) {
-            
-            NegetivesInCoulmn[i] = io.nextInt() ;
+            PositiveInColumns[i] = io.nextInt() ;
             
         }
         
-        FirstTable = new int [Rows][Coulmns] ;
+         for(int i = 0; i < Columns; i++) {
+            
+            NegativesInColumns[i] = io.nextInt() ;
+            
+        }
+        
+        FirstTable = new int [Rows][Columns] ;
         
         for(int i = 0 ; i < Rows ; i ++ ){
-            for(int j = 0 ; j < Coulmns ; j ++ ){
+            for(int j = 0; j < Columns; j ++ ){
                 
                 FirstTable [i][j] = io.nextInt() ;
             }
         }
  //........................................................................................
 
-        TableOfValues  = new pice[Rows][Coulmns] ;
+        TableOfValues  = new piece[Rows][Columns] ;
         for(int i = 0 ; i < Rows ; i ++ ){
-            for(int j = 0 ; j < Coulmns ; j ++ ){
-                TableOfValues[i][j] = new pice() ;
+            for(int j = 0; j < Columns; j ++ ){
+                TableOfValues[i][j] = new piece() ;
             }
         }
         
-        int numberOfVariable = Rows*Coulmns / 2 ;
+        int numberOfVariable = Rows* Columns / 2 ;
         variables = new Variable[numberOfVariable] ;
         for(int u = 0 ; u < numberOfVariable ; u ++ ){
              variables[u] = new Variable() ;
@@ -90,7 +90,7 @@ public class AI_Project3 {
         int pp [] = new int [numberOfVariable] ;
         
         for(int i = 0  ; i < Rows ; i ++ ){
-            for(int j = 0 ; j < Coulmns ; j ++ ) {
+            for(int j = 0; j < Columns; j ++ ) {
                 int counter = 0 ; 
                 int number = FirstTable[i][j] ;
                 for(int p = 0 ; p < numberOfVariable ; p ++ ){
@@ -104,24 +104,24 @@ public class AI_Project3 {
                     pp[counter1] = number ; 
                     TableOfValues[i][j].Variable = counter1 ;
                     variables[counter1].whichVarInArray = counter1 ;
-                    variables [counter1].pice1X = i  ; 
-                    variables [counter1].pice1Y = j ;
+                    variables [counter1].piece1X = i  ;
+                    variables [counter1].piece1Y = j ;
                     variables [counter1].numberOfVariable = counter1 ;
                     if(i < Rows -1 ){
                         if(FirstTable[i+1][j] == number ) {
                             TableOfValues[i+1][j].Variable = counter1 ;
-                            variables[counter1].pice2X = i+1 ;
-                            variables[counter1].pice2Y =j ;
+                            variables[counter1].piece2X = i+1 ;
+                            variables[counter1].piece2Y =j ;
                             
 
                             
                         }
                     }
-                    if(j < Coulmns -1 ){
+                    if(j < Columns -1 ){
                          if(FirstTable[i][j+1] == number ) {
                              TableOfValues[i][j+1].Variable = counter1 ;
-                            variables[counter1].pice2X = i ;
-                            variables[counter1].pice2Y =j+1 ;
+                            variables[counter1].piece2X = i ;
+                            variables[counter1].piece2Y =j+1 ;
                             
                            
                         }
@@ -156,31 +156,31 @@ public class AI_Project3 {
         
         if(Domain == 0 ) {
            variables[var].value = 0  ;
-           variables[var].pice1 = "0"  ;
-           variables[var].pice2 = "0"  ;
-           TableOfValues[variables[var].pice1X][variables[var].pice1Y].value = "0" ;
-           TableOfValues[variables[var].pice2X][variables[var].pice2Y].value = "0" ;
+           variables[var].piece1 = "0"  ;
+           variables[var].piece2 = "0"  ;
+           TableOfValues[variables[var].piece1X][variables[var].piece1Y].value = "0" ;
+           TableOfValues[variables[var].piece2X][variables[var].piece2Y].value = "0" ;
             
         }else{
             if(Domain == 1) {
            variables[var].value = 1 ; 
-           variables[var].pice1 = "+"  ;
-           variables[var].pice2 = "-"  ;
-           TableOfValues[variables[var].pice1X][variables[var].pice1Y].value = "+" ;
-           TableOfValues[variables[var].pice2X][variables[var].pice2Y].value = "-" ;
+           variables[var].piece1 = "+"  ;
+           variables[var].piece2 = "-"  ;
+           TableOfValues[variables[var].piece1X][variables[var].piece1Y].value = "+" ;
+           TableOfValues[variables[var].piece2X][variables[var].piece2Y].value = "-" ;
             }else{
                 if(Domain == 2 ){
            variables[var].value = 2 ;
-           variables[var].pice1 = "-"  ;
-           variables[var].pice2 = "+"  ;
-           TableOfValues[variables[var].pice1X][variables[var].pice1Y].value = "-" ;
-           TableOfValues[variables[var].pice2X][variables[var].pice2Y].value = "+" ;
+           variables[var].piece1 = "-"  ;
+           variables[var].piece2 = "+"  ;
+           TableOfValues[variables[var].piece1X][variables[var].piece1Y].value = "-" ;
+           TableOfValues[variables[var].piece2X][variables[var].piece2Y].value = "+" ;
                 }
             }
         }
     }
 
-    public int Select_Unsighnd_Variable(int sizeOfVariables){
+    public int Select_Unsigned_Variable(int sizeOfVariables){
         int variable = -1 ;
         for(int i = 0  ; i < sizeOfVariables ; i ++ ){
             if(variables[i].value == -1){
@@ -192,21 +192,21 @@ public class AI_Project3 {
     }
 
 public static boolean satisfy_Constrains (){
-    for(int i = 0  ; i  < Coulmns ; i ++ ) {
+    for(int i = 0; i  < Columns; i ++ ) {
         int positive = 0  ; 
-        int negetive = 0 ; 
+        int negative = 0 ;
         for(int j = 0 ; j < Rows ; j ++ ) {
             if (TableOfValues[i][j].value == "+"){
                 positive++ ; 
                 
             }else{
                 if(TableOfValues[i][j].value == "-"){
-                    negetive ++ ; 
+                    negative ++ ;
                 }
             }
             
         }
-        if(PositvesInCoulmn [i] != positive || NegetivesInCoulmn[i] != negetive){
+        if(PositiveInColumns[i] != positive || NegativesInColumns[i] != negative){
        return false ;
         }
     }
@@ -214,7 +214,7 @@ public static boolean satisfy_Constrains (){
      for(int i = 0  ; i  < Rows ; i ++ ) {
         int positive = 0  ; 
         int negetive = 0 ; 
-        for(int j = 0 ; j < Coulmns ; j ++ ) {
+        for(int j = 0; j < Columns; j ++ ) {
             if (TableOfValues[i][j].value == "+"){
                 positive++ ; 
                 
@@ -225,13 +225,13 @@ public static boolean satisfy_Constrains (){
             }
             
         }
-        if(PositivesInRows[i] != positive || NegetivesInRows[i] != negetive){
+        if(PositivesInRows[i] != positive || NegativesInRows[i] != negetive){
        return false ;
         }
     }
     
     for(int i = 0 ; i < Rows  ; i ++ ) {
-        for(int j = 0 ; j < Coulmns ; j ++ ) {
+        for(int j = 0; j < Columns; j ++ ) {
             
             if(TableOfValues[i][j].value == "+"){
                 
@@ -240,7 +240,7 @@ public static boolean satisfy_Constrains (){
                           return false ;    
                         }
                     }
-                    if(j < Coulmns -1 ){
+                    if(j < Columns -1 ){
                          if(TableOfValues[i][j+1].value != "+" ) {
                             
                             return false ;
@@ -255,7 +255,7 @@ public static boolean satisfy_Constrains (){
                           return false ;    
                         }
                     }
-                    if(j < Coulmns -1 ){
+                    if(j < Columns -1 ){
                          if(TableOfValues[i][j+1].value != "-" ) {
                             
                             return false ;

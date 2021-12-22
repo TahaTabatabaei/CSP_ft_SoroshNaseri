@@ -17,12 +17,12 @@ public class Variable {
   public int value = -1;
   
   public int whichVarInArray ;
-  public int pice1X ;
-  public int pice1Y ;
+  public int piece1X;
+  public int piece1Y;
   
-  public int pice2X ;
-  public int pice2Y ;
+  public int piece2X;
+  public int piece2Y;
     
-  public String pice1 ;
-  public String pice2 ;
+  public String piece1;
+  public String piece2;
 }
