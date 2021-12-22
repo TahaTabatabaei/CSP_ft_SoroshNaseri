@@ -12,7 +12,7 @@ package ai_project3;
 public class Variable {
     
     
-  public int Domain [] = {1 , 1 , 1 } ;   // domain[0] = (0,0) , domain[1] = (-,+) , domain[2] = (+,-)
+  public int Domain [] = {1 , 1 , 1 } ;   // domain[0] = (0,0) , domain[1] = (+,-) , domain[2] = (-,+)
   public int numberOfVariable ;
   public int value = -1;
   

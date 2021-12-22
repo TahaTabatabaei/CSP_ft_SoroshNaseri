@@ -141,13 +141,21 @@ public class AI_Project3 {
     }
     
     public static void AC_3 (){
-    
-}
+
+    }
     public static void  Forward(){
         
     }
-    
-    // TODO cheack Domain
+
+    // TODO check Domain
+    public boolean checkDomain(int domain , int var){
+        Variable v = variables[var];
+        if (v.Domain[domain] == 0){
+            return false;
+        }
+        return true;
+    }
+
     // TODO Update Domain
     
     // in this function we give a variable and one of its domains and the function
