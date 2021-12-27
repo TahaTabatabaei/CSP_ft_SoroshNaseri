@@ -276,7 +276,6 @@ public class AI_Project3 {
                 queue.add(new Pair(var, variables[neighbor]));
             }
         }
-
         while (!queue.isEmpty()) {
             Pair pair = queue.get(0);
             queue.remove(0);
@@ -298,7 +297,6 @@ public class AI_Project3 {
     public static boolean Revise(Variable var1, Variable var2, piece[][] tableOfValues){
         boolean revised = false;
         for (int i =0 ; i < 3 ; i++) {
-
             // TODO use value
             if (checkDomain(i,var1.whichVarInArray)){
                 add(i,var1.whichVarInArray,tableOfValues);
@@ -306,26 +304,25 @@ public class AI_Project3 {
             else {
                 continue;
             }
-
+            int counter = 0;
             for (int j = 0; j < 3; j++) {
                 if (checkDomain(j,var2.whichVarInArray)){
                     add(j,var2.whichVarInArray,tableOfValues);
                     if (!isSati(var2.whichVarInArray)){
-                        revised = true;
-                    }else {
-                        revised = false;
+                        counter++;
                     }
                 }
                 else {
                     continue;
                 }
             }
-
+            if (counter > 2){
+                revised = true;
+            }
             if (revised){
                 updateDomain(i,var1.whichVarInArray);
             }
         }
-
         return revised;
     }
     public static void  Forward(){
