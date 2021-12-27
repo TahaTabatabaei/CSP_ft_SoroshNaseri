@@ -244,7 +244,7 @@ public class AI_Project3 {
             if (variables[var].Domain[i] != 0 ){
 
                 int domainVar = variables[var].value ;
-                add(i   , var );
+                add(i   , var , TableOfValues);
                 //        System.out.println(variables[var].value);
                 boolean iop = isSati(var) ;
 
@@ -268,7 +268,7 @@ public class AI_Project3 {
         }
         return false ;
     }
-    public static boolean AC_3 (){
+    public static boolean AC_3 (piece[][] tableOfValues){
         // add all (vi , vj) pairs
         ArrayList<Pair> queue = new ArrayList<Pair>();
         for (Variable var : variables) {
@@ -278,16 +278,16 @@ public class AI_Project3 {
         }
 
         while (!queue.isEmpty()) {
-            Pair pair = queue.get(queue.size()-1);
-            queue.remove(queue.size()-1);
+            Pair pair = queue.get(0);
+            queue.remove(0);
 
-            if (Revise(pair.var1 , pair.var2)){
-                if(pair.var1.Domain.length == 0){
+            if (Revise(pair.var1 , pair.var2, tableOfValues)){
+                if( (pair.var1.Domain[0] == 0) && (pair.var1.Domain[1] == 0) && (pair.var1.Domain[2] == 0)){
                     return false;
                 }
-                for (Variable var: variables) {
-                    if (var.whichVarInArray != pair.var1.whichVarInArray){
-                        queue.add(new Pair(var,pair.var1));
+                for (int neighbor : pair.var1.neighbors) {
+                    if (neighbor != pair.var1.whichVarInArray){
+                        queue.add(new Pair(variables[neighbor], pair.var1));
                     }
                 }
             }
@@ -295,11 +295,34 @@ public class AI_Project3 {
         return true;
     }
 
-    public static boolean Revise(Variable var1, Variable var2){
+    public static boolean Revise(Variable var1, Variable var2, piece[][] tableOfValues){
         boolean revised = false;
-        for (int var1_value : var1.Domain) {
-            for (int var2_value: var2.Domain) {
+        for (int i =0 ; i < 3 ; i++) {
 
+            // TODO use value
+            if (checkDomain(i,var1.whichVarInArray)){
+                add(i,var1.whichVarInArray,tableOfValues);
+            }
+            else {
+                continue;
+            }
+
+            for (int j = 0; j < 3; j++) {
+                if (checkDomain(j,var2.whichVarInArray)){
+                    add(j,var2.whichVarInArray,tableOfValues);
+                    if (!isSati(var2.whichVarInArray)){
+                        revised = true;
+                    }else {
+                        revised = false;
+                    }
+                }
+                else {
+                    continue;
+                }
+            }
+
+            if (revised){
+                updateDomain(i,var1.whichVarInArray);
             }
         }
 
@@ -310,35 +333,48 @@ public class AI_Project3 {
     }
 
     // TODO check Domain
+    public static boolean checkDomain(int domain , int var){
+        Variable v = variables[var];
+        if (v.Domain[domain] == 0){
+            return false;
+        }
+        return true;
+    }
 
     // in this function we give a variable and one of its domains and the function
     // will change the variable
-    public static void   add (int Domain , int var){
+    public static void   add (int Domain , int var, piece[][] tableOfValues){
 
         if(Domain == 0 ) {
             variables[var].value = 0  ;
             variables[var].piece1 = "0"  ;
             variables[var].piece2 = "0"  ;
-            TableOfValues[variables[var].piece1X][variables[var].piece1Y].value = "0" ;
-            TableOfValues[variables[var].piece2X][variables[var].piece2Y].value = "0" ;
+            tableOfValues[variables[var].piece1X][variables[var].piece1Y].value = "0" ;
+            tableOfValues[variables[var].piece2X][variables[var].piece2Y].value = "0" ;
 
         }else{
             if(Domain == 1) {
                 variables[var].value = 1 ;
                 variables[var].piece1 = "+"  ;
                 variables[var].piece2 = "-"  ;
-                TableOfValues[variables[var].piece1X][variables[var].piece1Y].value = "+" ;
-                TableOfValues[variables[var].piece2X][variables[var].piece2Y].value = "-" ;
+                tableOfValues[variables[var].piece1X][variables[var].piece1Y].value = "+" ;
+                tableOfValues[variables[var].piece2X][variables[var].piece2Y].value = "-" ;
             }else{
                 if(Domain == 2 ){
                     variables[var].value = 2 ;
                     variables[var].piece1 = "-"  ;
                     variables[var].piece2 = "+"  ;
-                    TableOfValues[variables[var].piece1X][variables[var].piece1Y].value = "-" ;
-                    TableOfValues[variables[var].piece2X][variables[var].piece2Y].value = "+" ;
+                    tableOfValues[variables[var].piece1X][variables[var].piece1Y].value = "-" ;
+                    tableOfValues[variables[var].piece2X][variables[var].piece2Y].value = "+" ;
                 }
             }
         }
+    }
+
+    // TODO update Domain
+    public static void updateDomain(int domain, int variable){
+        Variable v = variables[variable];
+        v.Domain[domain] = 0;
     }
 
     public static  int Select_Unsigned_Variable(int sizeOfVariables){
