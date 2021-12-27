@@ -5,6 +5,8 @@
  */
 package ai_project3;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Patric
@@ -25,4 +27,6 @@ public class Variable {
     
   public String piece1;
   public String piece2;
+
+  public ArrayList<Integer> neighbors;
 }

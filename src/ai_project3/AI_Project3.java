@@ -126,7 +126,12 @@ public class AI_Project3 {
                 }
             }
         }
-
+        /*
+        // TODO get neighbors
+        for (Variable var : variables) {
+            var.neighbors = getNeighbors(var);
+        }
+         */
         boolean i = Backtracking() ;
         if(i == true){
 
@@ -191,8 +196,6 @@ public class AI_Project3 {
                         negativeInColumn2 ++ ;
                     }
                 }
-
-
             }
 
             if(positiveInRow1 > PositivesInRows [x1] || positiveInRow2 > PositivesInRows [x2] || positiveInColumn1 > PositiveInColumns[y1] ||
@@ -235,7 +238,7 @@ public class AI_Project3 {
         if(isComplete() &&satisfy_Constrains () ){return true ;}
         if(isComplete() && !satisfy_Constrains()){return false ;}
 
-        int var = Select_Unsighnd_Variable(Columns * Rows / 2) ;
+        int var = Select_Unsigned_Variable(Columns * Rows / 2) ;
         // System.out.println(var) ;
         for (int i = 0 ; i <3 ; i++){
             if (variables[var].Domain[i] != 0 ){
@@ -266,8 +269,43 @@ public class AI_Project3 {
         return false ;
     }
 
-    public static void AC_3 (){
+    public static boolean AC_3 (){
+        // add all (vi , vj) pairs
+        ArrayList<Pair> queue = new ArrayList();
+        for (int i=0; i < variables.length; i++){
+            for (int j = i+1; j < variables.length ; j++){
+                // TODO should replace with neighbors
+                queue.add(new Pair(variables[i],variables[j]));
+            }
+        }
 
+        while (!queue.isEmpty()) {
+            Pair pair = queue.get(queue.size()-1);
+            queue.remove(queue.size()-1);
+
+            if (Revise(pair.var1 , pair.var2)){
+                if(pair.var1.Domain.length == 0){
+                    return false;
+                }
+                for (Variable var: variables) {
+                    if (var.whichVarInArray != pair.var1.whichVarInArray){
+                        queue.add(new Pair(var,pair.var1));
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    public static boolean Revise(Variable var1, Variable var2){
+        boolean revised = false;
+        for (int var1_value : var1.Domain) {
+            for (int var2_value: var2.Domain) {
+
+            }
+        }
+
+        return revised;
     }
     public static void  Forward(){
 
@@ -305,7 +343,7 @@ public class AI_Project3 {
         }
     }
 
-    public static  int Select_Unsighnd_Variable(int sizeOfVariables){
+    public static  int Select_Unsigned_Variable(int sizeOfVariables){
         int variable = -1 ;
         for(int i = 0  ; i < sizeOfVariables ; i ++ ){
             if(variables[i].value == -1){
@@ -319,7 +357,7 @@ public class AI_Project3 {
     public static boolean satisfy_Constrains (){
         for(int i = 0; i  < Columns; i ++ ) {
             int positive = 0  ;
-            int negetive = 0 ;
+            int negative = 0 ;
             for(int j = 0 ; j < Rows ; j ++ ) {
                 //  System.out.println(TableOfValues[j][i].value) ;
                 if (TableOfValues[j][i].value.equals("+")){
@@ -328,11 +366,11 @@ public class AI_Project3 {
 
                 }else{
                     if(TableOfValues[j][i].value.equals("-")){
-                        negetive +=1 ;
+                        negative +=1 ;
                     }
                 }
             }
-            if(PositiveInColumns[i] != positive || NegativeInColumns[i] != negetive){
+            if(PositiveInColumns[i] != positive || NegativeInColumns[i] != negative){
 
                 return false ;
             }
@@ -397,5 +435,38 @@ public class AI_Project3 {
             }
         }
         return true ;
+    }
+
+    static ArrayList<Integer> getNeighbors(Variable variable){
+        ArrayList<Integer> neighbors = new ArrayList<>();
+
+        if (variable.piece1X == variable.piece2X){
+            for (Variable var :
+                    variables) {
+                if (var.whichVarInArray != variable.whichVarInArray) {
+                    if ((variable.piece1X == var.piece1X) || (variable.piece1X == var.piece2X)) {
+                        neighbors.add(var.whichVarInArray);
+                    }else if((variable.piece1Y == var.piece1Y) || (variable.piece1Y == var.piece2Y)) {
+                        neighbors.add(var.whichVarInArray);
+                    }else if((variable.piece2Y == var.piece1Y) || (variable.piece2Y == var.piece2Y)) {
+                        neighbors.add(var.whichVarInArray);
+                    }
+                }
+            }
+        }else{
+            for (Variable var :
+                    variables) {
+                if (var.whichVarInArray != variable.whichVarInArray) {
+                    if ((variable.piece1Y == var.piece1Y) || (variable.piece1Y == var.piece2Y)) {
+                        neighbors.add(var.whichVarInArray);
+                    }else if((variable.piece1X == var.piece1X) || (variable.piece1X == var.piece2X)) {
+                        neighbors.add(var.whichVarInArray);
+                    }else if((variable.piece2X == var.piece1X) || (variable.piece2X == var.piece2X)) {
+                        neighbors.add(var.whichVarInArray);
+                    }
+                }
+            }
+        }
+        return neighbors;
     }
 }
