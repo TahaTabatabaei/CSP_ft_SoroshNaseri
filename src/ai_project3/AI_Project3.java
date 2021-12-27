@@ -268,14 +268,12 @@ public class AI_Project3 {
         }
         return false ;
     }
-
     public static boolean AC_3 (){
         // add all (vi , vj) pairs
-        ArrayList<Pair> queue = new ArrayList();
-        for (int i=0; i < variables.length; i++){
-            for (int j = i+1; j < variables.length ; j++){
-                // TODO should replace with neighbors
-                queue.add(new Pair(variables[i],variables[j]));
+        ArrayList<Pair> queue = new ArrayList<Pair>();
+        for (Variable var : variables) {
+            for (int neighbor : var.neighbors) {
+                queue.add(new Pair(var, variables[neighbor]));
             }
         }
 
@@ -439,31 +437,13 @@ public class AI_Project3 {
 
     static ArrayList<Integer> getNeighbors(Variable variable){
         ArrayList<Integer> neighbors = new ArrayList<>();
-
-        if (variable.piece1X == variable.piece2X){
-            for (Variable var :
-                    variables) {
-                if (var.whichVarInArray != variable.whichVarInArray) {
-                    if ((variable.piece1X == var.piece1X) || (variable.piece1X == var.piece2X)) {
-                        neighbors.add(var.whichVarInArray);
-                    }else if((variable.piece1Y == var.piece1Y) || (variable.piece1Y == var.piece2Y)) {
-                        neighbors.add(var.whichVarInArray);
-                    }else if((variable.piece2Y == var.piece1Y) || (variable.piece2Y == var.piece2Y)) {
-                        neighbors.add(var.whichVarInArray);
-                    }
-                }
-            }
-        }else{
-            for (Variable var :
-                    variables) {
-                if (var.whichVarInArray != variable.whichVarInArray) {
-                    if ((variable.piece1Y == var.piece1Y) || (variable.piece1Y == var.piece2Y)) {
-                        neighbors.add(var.whichVarInArray);
-                    }else if((variable.piece1X == var.piece1X) || (variable.piece1X == var.piece2X)) {
-                        neighbors.add(var.whichVarInArray);
-                    }else if((variable.piece2X == var.piece1X) || (variable.piece2X == var.piece2X)) {
-                        neighbors.add(var.whichVarInArray);
-                    }
+        for (Variable var : variables) {
+            if (var.whichVarInArray != variable.whichVarInArray) {
+                if(( (variable.piece1X-1 < var.piece1X ) && (variable.piece2X+1 > var.piece1X) ) ||
+                        ( (variable.piece1X-1 < var.piece2X ) && (variable.piece2X+1 > var.piece2X) ) ||
+                        ( (variable.piece1Y-1 < var.piece1Y) && (variable.piece2Y+1 > var.piece1Y) ) ||
+                        ( (variable.piece1Y-1 < var.piece2Y) && (variable.piece2Y+1 > var.piece2Y) ) ){
+                    neighbors.add(var.whichVarInArray);
                 }
             }
         }
