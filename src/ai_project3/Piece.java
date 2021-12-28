@@ -9,7 +9,7 @@ package ai_project3;
  *
  * @author Patric
  */
-public class piece {
+public class Piece {
     
    public String value ;
    

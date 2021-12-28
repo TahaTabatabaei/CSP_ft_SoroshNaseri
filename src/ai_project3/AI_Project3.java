@@ -25,7 +25,7 @@ public class AI_Project3 {
     public static Variable[] variables;
     public static int Columns;
     public static int Rows ;
-    public static piece[][] TableOfValues;
+    public static Piece[][] TableOfValues;
 
 
 
@@ -74,10 +74,10 @@ public class AI_Project3 {
         }
         //........................................................................................
 
-        TableOfValues  = new piece[Rows][Columns] ;
+        TableOfValues  = new Piece[Rows][Columns] ;
         for(int i = 0 ; i < Rows ; i ++ ){
             for(int j = 0; j < Columns; j ++ ){
-                TableOfValues[i][j] = new piece() ;
+                TableOfValues[i][j] = new Piece() ;
             }
         }
 
@@ -138,10 +138,11 @@ public class AI_Project3 {
             }
         }
 
-        for (Variable varK : variables) {
-            int f = varK.whichVarInArray+1;
-            System.out.println("var " + f + ", x1: " +varK.piece1X+", y1: "+varK.piece1Y+"\n x2: "+varK.piece2X+", y2: "+varK.piece2Y+"\n");
-        }
+//        for (Variable varK : variables) {
+//            int f = varK.whichVarInArray+1;
+//            System.out.println("var " + f + ", x1: " +varK.piece1X+", y1: "+varK.piece1Y+"\n x2: "+varK.piece2X+", y2: "+varK.piece2Y+"\n");
+//        }
+        /*
         boolean i = Backtracking() ;
         if(i == true){
 
@@ -154,8 +155,25 @@ public class AI_Project3 {
         }else{
             System.out.print("sdsdfasdfsfsafsa");
         }
+         */
 
+        // test AC3
+        Piece[][] table = new Piece[Rows][Columns] ;
+        for (int i = 0; i < Rows; i++) {
+            for (int j = 0; j < Columns; j++) {
+                table[i][j] = TableOfValues[i][j];
+            }
+        }
+        AC_3(table);
 
+        for (Variable var :
+                variables) {
+            System.out.println("\ndomain "+var.whichVarInArray+" is: ");
+            for (int d :
+                    var.Domain) {
+                System.out.println(d+",");
+            }
+        }
     }
 
     public static boolean  isSati(int var ){
@@ -278,7 +296,7 @@ public class AI_Project3 {
         }
         return false ;
     }
-    public static boolean AC_3 (piece[][] tableOfValues){
+    public static boolean AC_3 (Piece[][] tableOfValues){
         // add all (vi , vj) pairs
         ArrayList<Pair> queue = new ArrayList<Pair>();
         for (Variable var : variables) {
@@ -304,8 +322,9 @@ public class AI_Project3 {
         return true;
     }
 
-    public static boolean Revise(Variable var1, Variable var2, piece[][] tableOfValues){
+    public static boolean Revise(Variable var1, Variable var2, Piece[][] tableOfValues){
         boolean revised = false;
+        System.out.println("revise arc for var "+var1.whichVarInArray+" ,var "+var2.whichVarInArray);
         for (int i =0 ; i < 3 ; i++) {
             // TODO use value
             if (checkDomain(i,var1.whichVarInArray)){
@@ -318,7 +337,7 @@ public class AI_Project3 {
             for (int j = 0; j < 3; j++) {
                 if (checkDomain(j,var2.whichVarInArray)){
                     add(j,var2.whichVarInArray,tableOfValues);
-                    if (!isSati(var2.whichVarInArray)){
+                    if (!satisfy_arc(var2.whichVarInArray)){
                         counter++;
                     }
                 }
@@ -331,6 +350,7 @@ public class AI_Project3 {
             }
             if (revised){
                 updateDomain(i,var1.whichVarInArray);
+                System.out.println("domain "+i+"  of var "+var1.whichVarInArray+" has updated");
             }
         }
         return revised;
@@ -350,7 +370,7 @@ public class AI_Project3 {
 
     // in this function we give a variable and one of its domains and the function
     // will change the variable
-    public static void   add (int Domain , int var, piece[][] tableOfValues){
+    public static void   add (int Domain , int var, Piece[][] tableOfValues){
 
         if(Domain == 0 ) {
             variables[var].value = 0  ;
@@ -482,14 +502,59 @@ public class AI_Project3 {
         ArrayList<Integer> neighbors = new ArrayList<>();
         for (Variable var : variables) {
             if (var.whichVarInArray != variable.whichVarInArray) {
-                if(( ((variable.piece1X-1 <= var.piece1X ) && (variable.piece2X+1 >= var.piece1X) ) ||
+                if( ( ((variable.piece1X-1 <= var.piece1X ) && (variable.piece2X+1 >= var.piece1X) ) ||
                         ( (variable.piece1X-1 <= var.piece2X ) && (variable.piece2X+1 >= var.piece2X) )) &&
                         ( ( (variable.piece1Y-1 <= var.piece1Y) && (variable.piece2Y+1 >= var.piece1Y) ) ||
-                        ( (variable.piece1Y-1 <= var.piece2Y) && (variable.piece2Y+1 >= var.piece2Y) ) )){
-                    neighbors.add(var.whichVarInArray);
+                        ( (variable.piece1Y-1 <= var.piece2Y) && (variable.piece2Y+1 >= var.piece2Y) ) ) ){
+
+                    if (  ( ((variable.piece1X <= var.piece1X ) && (variable.piece2X >= var.piece1X) ) ||
+                            ( (variable.piece1X <= var.piece2X ) && (variable.piece2X >= var.piece2X) ))  ){
+                        neighbors.add(var.whichVarInArray);
+                    }else if ( ( ( (variable.piece1Y <= var.piece1Y) && (variable.piece2Y >= var.piece1Y) ) ||
+                            ( (variable.piece1Y <= var.piece2Y) && (variable.piece2Y >= var.piece2Y) ) ) ){
+                        neighbors.add(var.whichVarInArray);
+                    }
                 }
             }
         }
         return neighbors;
+    }
+
+    public static boolean satisfy_arc(int var) {
+
+        if (variables[var].value == 1 || variables[var].value == 2) {
+            System.out.println("satisfy_arc");
+            int x1, x2, y1, y2;
+            x1 = variables[var].piece1X;
+            y1 = variables[var].piece1Y;
+            x2 = variables[var].piece2X;
+            y2 = variables[var].piece2Y;
+
+            if (x1 < Rows - 1 && TableOfValues[x1 + 1][y1] == TableOfValues[x1][y1]) {
+                return false;
+            }
+            if (x1 > 0 && TableOfValues[x1 - 1][y1] == TableOfValues[x1][y1]) {
+                return false;
+            }
+            if (y1 < Columns - 1 && TableOfValues[x1][y1 + 1] == TableOfValues[x1][y1]) {
+                return false;
+            }
+            if (y1 > 0 && TableOfValues[x1][y1 - 1] == TableOfValues[x1][y1]) {
+                return false;
+            }
+            if (x2 < Rows - 1 && TableOfValues[x2 + 1][y2] == TableOfValues[x2][y2]) {
+                return false;
+            }
+            if (x2 > 0 && TableOfValues[x2 - 1][y2] == TableOfValues[x2][y2]) {
+                return false;
+            }
+            if (y2 < Columns - 1 && TableOfValues[x2][y2 + 1] == TableOfValues[x2][y2]) {
+                return false;
+            }
+            if (y2 > 0 && TableOfValues[x2][y2 - 1] == TableOfValues[x2][y2]) {
+                return false;
+            }
+        }
+        return true;
     }
 }
