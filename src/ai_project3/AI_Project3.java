@@ -177,6 +177,17 @@ public class AI_Project3 {
 //            }
 //        }
 
+        // test forward
+        Forward(variables[0],1);
+        for (Variable var : variables) {
+            System.out.println("\ndomain "+var.whichVarInArray+" is: ");
+            for (int d :
+                    var.Domain) {
+                System.out.println(d+",");
+            }
+        }
+
+
     }
 
     public static boolean  isSati(int var ){
@@ -363,7 +374,7 @@ public class AI_Project3 {
         }
         return revised;
     }
-    public static void  Forward(Variable currentVar, int domain_value){
+    public static void Forward(Variable currentVar, int domain_value){
         //Variable currentVar = minimum_remaining_value(variables);
         add(domain_value,currentVar.whichVarInArray,TableOfValues);
 
@@ -371,147 +382,191 @@ public class AI_Project3 {
         int x2 = currentVar.piece2X;
         int y1 = currentVar.piece1Y;
         int y2 = currentVar.piece2Y;
+        int v1 =0;
+        int v2 =0;
+        int v3 =0;
+        int v4 =0;
+        int v5 =0;
+        int v6 =0;
+
+        boolean b1 = false,b2= false,b3 = false,b4 =false,b5 = false,b6 =false;
         if (isVertical(currentVar)){
             // y1==y2
-            int v1 = TableOfValues[x1-1][y1].Variable;
-            int v2 = TableOfValues[x2+1][y1].Variable;
-            int v3 = TableOfValues[x1][y1-1].Variable;
-            int v4 = TableOfValues[x1][y1+1].Variable;
-            int v5 = TableOfValues[x2][y2-1].Variable;
-            int v6 = TableOfValues[x2][y2+1].Variable;
+            if (x1-1 >= 0){
+                v1 = TableOfValues[x1-1][y1].Variable;
+                b1 = true;
+            }
+            if (x2+1 < Rows){
+                v2 = TableOfValues[x2+1][y1].Variable;
+                b2 = true;
+            }
+            if (y1-1 >= 0){
+                v3 = TableOfValues[x1][y1-1].Variable;
+                b3 = true;
+            }
+            if (y1+1 < Columns){
+                v4 = TableOfValues[x1][y1+1].Variable;
+                b4 = true;
+            }
+            if (y2-1 >= 0){
+                v5 = TableOfValues[x2][y2-1].Variable;
+                b5 = true;
+            }
+            if (y2+1 < Columns){
+                v6 = TableOfValues[x2][y2+1].Variable;
+                b6 = true;
+            }
 
-            if (domain_value == 1){ // (+.-)
+            if (domain_value == 1 && b1){ // (+.-)
                 if (variables[v1].piece1X == (x1-1)){
                     updateDomain(1,v1);
-                }else if(variables[v1].piece2X == (x1-1)) {
+                }else if(variables[v1].piece2X == (x1-1) && b1) {
                     updateDomain(2,v1);
                 }
-                if (variables[v2].piece1X == (x2+1)){
+                if (variables[v2].piece1X == (x2+1) && b2){
                     updateDomain(2,v2);
-                }else if(variables[v2].piece2X == (x2+1)){
+                }else if(variables[v2].piece2X == (x2+1) && b2){
                     updateDomain(1,v2);
                 }
-                if (variables[v3].piece1Y == (y1-1)){
+                if (variables[v3].piece1Y == (y1-1) && b3){
                     updateDomain(1,v3);
-                }else if(variables[v3].piece2Y == (y1-1)){
+                }else if(variables[v3].piece2Y == (y1-1) && b3){
                     updateDomain(2,v3);
                 }
-                if(variables[v4].piece1Y == (y1+1)){
+                if(variables[v4].piece1Y == (y1+1) && b4){
                     updateDomain(1,v4);
-                }else if (variables[v4].piece2Y == (y1+1)){
+                }else if (variables[v4].piece2Y == (y1+1) && b4){
                     updateDomain(2,v4);
                 }
-                if (variables[v5].piece1Y == (y2-1)){
+                if (variables[v5].piece1Y == (y2-1) && b5){
                     updateDomain(2,v5);
-                }else if(variables[v5].piece2Y == (y2-1)){
+                }else if(variables[v5].piece2Y == (y2-1) && b5){
                     updateDomain(1,v5);
                 }
-                if(variables[v6].piece1Y == (y2+1)){
+                if(variables[v6].piece1Y == (y2+1) && b6){
                     updateDomain(1,v6);
-                }else if(variables[v6].piece2Y == (y2+1)){
+                }else if(variables[v6].piece2Y == (y2+1) &&b6){
                     updateDomain(2,v6);
                 }
             }else if (domain_value == 2){ // (+,-)
-                if (variables[v1].piece1X == (x1-1)){
+                if (variables[v1].piece1X == (x1-1) && b1){
                     updateDomain(2,v1);
-                }else if(variables[v1].piece2X == (x1-1)) {
+                }else if(variables[v1].piece2X == (x1-1) && b1) {
                     updateDomain(1,v1);
                 }
-                if (variables[v2].piece1X == (x2+1)){
+                if (variables[v2].piece1X == (x2+1) && b2){
                     updateDomain(1,v2);
-                }else if(variables[v2].piece2X == (x2+1)){
+                }else if(variables[v2].piece2X == (x2+1) && b2){
                     updateDomain(2,v2);
                 }
-                if (variables[v3].piece1Y == (y1-1)){
+                if (variables[v3].piece1Y == (y1-1) && b3){
                     updateDomain(2,v3);
-                }else if(variables[v3].piece2Y == (y1-1)){
+                }else if(variables[v3].piece2Y == (y1-1) && b3){
                     updateDomain(1,v3);
                 }
-                if(variables[v4].piece1Y == (y1+1)){
+                if(variables[v4].piece1Y == (y1+1) && b4){
                     updateDomain(2,v4);
-                }else if (variables[v4].piece2Y == (y1+1)){
+                }else if (variables[v4].piece2Y == (y1+1) && b4){
                     updateDomain(1,v4);
                 }
-                if (variables[v5].piece1Y == (y2-1)){
+                if (variables[v5].piece1Y == (y2-1) && b5){
                     updateDomain(1,v5);
-                }else if(variables[v5].piece2Y == (y2-1)){
+                }else if(variables[v5].piece2Y == (y2-1) && b5){
                     updateDomain(2,v5);
                 }
-                if(variables[v6].piece1Y == (y2+1)){
+                if(variables[v6].piece1Y == (y2+1) && b6){
                     updateDomain(2,v6);
-                }else if(variables[v6].piece2Y == (y2+1)){
+                }else if(variables[v6].piece2Y == (y2+1) && b6){
                     updateDomain(1,v6);
                 }
             }
         }else {
             // x1==x2
-            int v1 = TableOfValues[x1][y1-1].Variable;
-            int v2 = TableOfValues[x2][y2+1].Variable;
-            int v3 = TableOfValues[x1-1][y1].Variable;
-            int v4 = TableOfValues[x1+1][y1].Variable;
-            int v5 = TableOfValues[x2-1][y2].Variable;
-            int v6 = TableOfValues[x2+1][y2].Variable;
-
+            if (y1-1 >= 0){
+                v1 = TableOfValues[x1][y1-1].Variable;
+                b1 = true;
+            }
+            if (y2+1 < Columns){
+                v2 = TableOfValues[x2][y2+1].Variable;
+                b2 = true;
+            }
+            if (x1-1 >= 0){
+                v3 = TableOfValues[x1-1][y1].Variable;
+                b3 = true;
+            }
+            if (x1+1 < Rows){
+                v4 = TableOfValues[x1+1][y1].Variable;
+                b4 = true;
+            }
+            if (x2-1 >= 0){
+                v5 = TableOfValues[x2-1][y2].Variable;
+                b5 = true;
+            }
+            if (x2+1 < Rows){
+                v6 = TableOfValues[x2+1][y2].Variable;
+                b6 = true;
+            }
             if (domain_value == 1){ // (+.-)
-                if (variables[v1].piece1Y == (y1-1)){
+
+                if (variables[v1].piece1Y == (y1-1) && b1){
                     updateDomain(1,v1);
-                }else if(variables[v1].piece2Y == (y1-1)) {
+                }else if(variables[v1].piece2Y == (y1-1) && b1) {
                     updateDomain(2,v1);
                 }
-                if (variables[v2].piece1Y == (y2+1)){
+                if (variables[v2].piece1Y == (y2+1) && b2){
                     updateDomain(2,v2);
-                }else if(variables[v2].piece2Y == (y2+1)){
+                }else if(variables[v2].piece2Y == (y2+1) && b2){
                     updateDomain(1,v2);
                 }
-                if (variables[v3].piece1X == (x1-1)){
+                if (variables[v3].piece1X == (x1-1) && b3){
                     updateDomain(1,v3);
-                }else if(variables[v3].piece2X == (x1-1)){
+                }else if(variables[v3].piece2X == (x1-1) && b3){
                     updateDomain(2,v3);
                 }
-                if(variables[v4].piece1X == (x1+1)){
+                if(variables[v4].piece1X == (x1+1) && b4){
                     updateDomain(1,v4);
-                }else if (variables[v4].piece2X == (x1+1)){
+                }else if (variables[v4].piece2X == (x1+1) && b4){
                     updateDomain(2,v4);
                 }
-                if (variables[v5].piece1X == (x2-1)){
+                if (variables[v5].piece1X == (x2-1) && b5){
                     updateDomain(2,v5);
-                }else if(variables[v5].piece2X == (x2-1)){
+                }else if(variables[v5].piece2X == (x2-1) && b5){
                     updateDomain(1,v5);
                 }
-                if(variables[v6].piece1X == (x2+1)){
+                if(variables[v6].piece1X == (x2+1) && b6){
                     updateDomain(1,v6);
-                }else if(variables[v6].piece2X == (x2+1)){
+                }else if(variables[v6].piece2X == (x2+1) && b6){
                     updateDomain(2,v6);
                 }
             }else if (domain_value == 2){ // (+,-)
-                if (variables[v1].piece1Y == (y1-1)){
+                if (variables[v1].piece1Y == (y1-1) && b1){
                     updateDomain(2,v1);
-                }else if(variables[v1].piece2Y == (y1-1)) {
+                }else if(variables[v1].piece2Y == (y1-1) && b1) {
                     updateDomain(1,v1);
                 }
-                if (variables[v2].piece1Y == (y2+1)){
+                if (variables[v2].piece1Y == (y2+1) && b2){
                     updateDomain(1,v2);
-                }else if(variables[v2].piece2Y == (y2+1)){
+                }else if(variables[v2].piece2Y == (y2+1) && b2){
                     updateDomain(2,v2);
                 }
-                if (variables[v3].piece1X == (x1-1)){
+                if (variables[v3].piece1X == (x1-1) && b3){
                     updateDomain(2,v3);
-                }else if(variables[v3].piece2X == (x1-1)){
+                }else if(variables[v3].piece2X == (x1-1) && b3){
                     updateDomain(1,v3);
                 }
-                if(variables[v4].piece1X == (x1+1)){
+                if(variables[v4].piece1X == (x1+1) && b4){
                     updateDomain(2,v4);
-                }else if (variables[v4].piece2X == (x1+1)){
+                }else if (variables[v4].piece2X == (x1+1) && b4){
                     updateDomain(1,v4);
                 }
-                if (variables[v5].piece1X == (x2-1)){
+                if (variables[v5].piece1X == (x2-1) && b5){
                     updateDomain(1,v5);
-                }else if(variables[v5].piece2X == (x2-1)){
+                }else if(variables[v5].piece2X == (x2-1) && b5){
                     updateDomain(2,v5);
                 }
-                if(variables[v6].piece1X == (x2+1)){
+                if(variables[v6].piece1X == (x2+1) && b6){
                     updateDomain(2,v6);
-                }else if(variables[v6].piece2X == (x2+1)){
+                }else if(variables[v6].piece2X == (x2+1) && b6){
                     updateDomain(1,v6);
                 }
             }
