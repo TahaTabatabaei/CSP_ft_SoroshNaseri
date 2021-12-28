@@ -34,6 +34,7 @@ public class AI_Project3 {
         // TODO code application logic here
 
 // Get the information ................................................................
+        System.out.println("enter:\n");
         Scanner io = new Scanner(System.in) ;
         Rows = io.nextInt() ;
         Columns = io.nextInt() ;
@@ -126,12 +127,21 @@ public class AI_Project3 {
                 }
             }
         }
-        /*
+
         // TODO get neighbors
         for (Variable var : variables) {
             var.neighbors = getNeighbors(var);
+            for (int neighbor :
+                    var.neighbors) {
+
+                System.out.println("var "+var.whichVarInArray+" has neighbor "+neighbor +"\n");
+            }
         }
-         */
+
+        for (Variable varK : variables) {
+            int f = varK.whichVarInArray+1;
+            System.out.println("var " + f + ", x1: " +varK.piece1X+", y1: "+varK.piece1Y+"\n x2: "+varK.piece2X+", y2: "+varK.piece2Y+"\n");
+        }
         boolean i = Backtracking() ;
         if(i == true){
 
@@ -472,10 +482,10 @@ public class AI_Project3 {
         ArrayList<Integer> neighbors = new ArrayList<>();
         for (Variable var : variables) {
             if (var.whichVarInArray != variable.whichVarInArray) {
-                if(( (variable.piece1X-1 < var.piece1X ) && (variable.piece2X+1 > var.piece1X) ) ||
-                        ( (variable.piece1X-1 < var.piece2X ) && (variable.piece2X+1 > var.piece2X) ) ||
-                        ( (variable.piece1Y-1 < var.piece1Y) && (variable.piece2Y+1 > var.piece1Y) ) ||
-                        ( (variable.piece1Y-1 < var.piece2Y) && (variable.piece2Y+1 > var.piece2Y) ) ){
+                if(( ((variable.piece1X-1 <= var.piece1X ) && (variable.piece2X+1 >= var.piece1X) ) ||
+                        ( (variable.piece1X-1 <= var.piece2X ) && (variable.piece2X+1 >= var.piece2X) )) &&
+                        ( ( (variable.piece1Y-1 <= var.piece1Y) && (variable.piece2Y+1 >= var.piece1Y) ) ||
+                        ( (variable.piece1Y-1 <= var.piece2Y) && (variable.piece2Y+1 >= var.piece2Y) ) )){
                     neighbors.add(var.whichVarInArray);
                 }
             }
