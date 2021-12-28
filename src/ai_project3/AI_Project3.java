@@ -131,11 +131,11 @@ public class AI_Project3 {
         // TODO get neighbors
         for (Variable var : variables) {
             var.neighbors = getNeighbors(var);
-            for (int neighbor :
-                    var.neighbors) {
-
-                System.out.println("var "+var.whichVarInArray+" has neighbor "+neighbor +"\n");
-            }
+//            for (int neighbor :
+//                    var.neighbors) {
+//
+//                System.out.println("var "+var.whichVarInArray+" has neighbor "+neighbor +"\n");
+//            }
         }
 
 //        for (Variable varK : variables) {
@@ -157,23 +157,26 @@ public class AI_Project3 {
         }
          */
 
-        // test AC3
-        Piece[][] table = new Piece[Rows][Columns] ;
-        for (int i = 0; i < Rows; i++) {
-            for (int j = 0; j < Columns; j++) {
-                table[i][j] = TableOfValues[i][j];
-            }
-        }
-        AC_3(table);
+//        // test AC3
+//        Piece[][] table = new Piece[Rows][Columns] ;
+//        for (int i = 0; i < Rows; i++) {
+//            for (int j = 0; j < Columns; j++) {
+//                table[i][j] = TableOfValues[i][j];
+//            }
+//        }
+//        updateDomain(1,1);
+//        updateDomain(2,1);
+//        AC_3(table);
+//
+//        for (Variable var :
+//                variables) {
+//            System.out.println("\ndomain "+var.whichVarInArray+" is: ");
+//            for (int d :
+//                    var.Domain) {
+//                System.out.println(d+",");
+//            }
+//        }
 
-        for (Variable var :
-                variables) {
-            System.out.println("\ndomain "+var.whichVarInArray+" is: ");
-            for (int d :
-                    var.Domain) {
-                System.out.println(d+",");
-            }
-        }
     }
 
     public static boolean  isSati(int var ){
@@ -329,15 +332,20 @@ public class AI_Project3 {
             // TODO use value
             if (checkDomain(i,var1.whichVarInArray)){
                 add(i,var1.whichVarInArray,tableOfValues);
+                System.out.println("consider domain "+i+" for var "+var1.whichVarInArray);
             }
             else {
                 continue;
             }
             int counter = 0;
+            int domainCounter = 0;
             for (int j = 0; j < 3; j++) {
                 if (checkDomain(j,var2.whichVarInArray)){
+                    domainCounter++;
                     add(j,var2.whichVarInArray,tableOfValues);
+                    System.out.println("try domain "+j+" for var "+var2.whichVarInArray);
                     if (!satisfy_arc(var2.whichVarInArray)){
+                        System.out.println("does not satisfy");
                         counter++;
                     }
                 }
@@ -345,7 +353,7 @@ public class AI_Project3 {
                     continue;
                 }
             }
-            if (counter > 2){
+            if (counter >= domainCounter){
                 revised = true;
             }
             if (revised){
