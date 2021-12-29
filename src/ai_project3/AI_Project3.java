@@ -183,13 +183,13 @@ public class AI_Project3 {
 //        Forward(variables[16],1);
 //        Forward(variables[6],1);
 //        Forward(variables[11],1);
-        for (Variable var : variables) {
-            System.out.println("\ndomain "+var.whichVarInArray+" is: ");
-            for (int d :
-                    var.Domain) {
-                System.out.println(d+",");
-            }
-        }
+//        for (Variable var : variables) {
+//            System.out.println("\ndomain "+var.whichVarInArray+" is: ");
+//            for (int d :
+//                    var.Domain) {
+//                System.out.println(d+",");
+//            }
+//        }
 
 
     }
