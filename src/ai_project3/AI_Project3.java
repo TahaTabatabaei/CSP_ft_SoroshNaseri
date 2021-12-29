@@ -178,7 +178,11 @@ public class AI_Project3 {
 //        }
 
         // test forward
-        Forward(variables[0],1);
+//        Forward(variables[0],1);
+//        Forward(variables[1],2);
+//        Forward(variables[16],1);
+//        Forward(variables[6],1);
+//        Forward(variables[11],1);
         for (Variable var : variables) {
             System.out.println("\ndomain "+var.whichVarInArray+" is: ");
             for (int d :
@@ -377,6 +381,7 @@ public class AI_Project3 {
     public static void Forward(Variable currentVar, int domain_value){
         //Variable currentVar = minimum_remaining_value(variables);
         add(domain_value,currentVar.whichVarInArray,TableOfValues);
+        System.out.println("got var "+currentVar.whichVarInArray+" with domain "+domain_value+"\n");
 
         int x1 = currentVar.piece1X;
         int x2 = currentVar.piece2X;
@@ -395,89 +400,203 @@ public class AI_Project3 {
             if (x1-1 >= 0){
                 v1 = TableOfValues[x1-1][y1].Variable;
                 b1 = true;
+                System.out.println("vertical b1, var "+v1);
             }
             if (x2+1 < Rows){
                 v2 = TableOfValues[x2+1][y1].Variable;
                 b2 = true;
+                System.out.println("vertical b2, var "+v2);
             }
             if (y1-1 >= 0){
                 v3 = TableOfValues[x1][y1-1].Variable;
                 b3 = true;
+                System.out.println("vertical b3, var "+v3);
             }
             if (y1+1 < Columns){
                 v4 = TableOfValues[x1][y1+1].Variable;
                 b4 = true;
+                System.out.println("vertical b4, var "+v4);
             }
             if (y2-1 >= 0){
                 v5 = TableOfValues[x2][y2-1].Variable;
                 b5 = true;
+                System.out.println("vertical b5, var "+v5);
             }
             if (y2+1 < Columns){
                 v6 = TableOfValues[x2][y2+1].Variable;
                 b6 = true;
+                System.out.println("vertical b6, var "+v6);
             }
 
-            if (domain_value == 1 && b1){ // (+.-)
-                if (variables[v1].piece1X == (x1-1)){
-                    updateDomain(1,v1);
+            if (domain_value == 1 ){ // (+.-)
+                if (variables[v1].piece1X == (x1-1) && b1){
+                    if (variables[v1].piece1Y == y1){
+                        updateDomain(1,v1);
+                        System.out.println("match");
+                    }
+                    else if (variables[v1].piece2Y == y1){
+                        updateDomain(2,v1);
+                        System.out.println("not match");
+                    }
+                    System.out.println("#1 b1 lock type1");
                 }else if(variables[v1].piece2X == (x1-1) && b1) {
                     updateDomain(2,v1);
+                    System.out.println("#1 b1 lock type2");
                 }
                 if (variables[v2].piece1X == (x2+1) && b2){
-                    updateDomain(2,v2);
+                    if (variables[v2].piece1Y == y2){
+                        updateDomain(2,v2);
+                        System.out.println("match*");
+                    }
+                    else if (variables[v2].piece2Y == y2){
+                        updateDomain(1,v2);
+                        System.out.println("not match*");
+                    }
+                    System.out.println("#1 b2 lock type1");
                 }else if(variables[v2].piece2X == (x2+1) && b2){
                     updateDomain(1,v2);
+                    System.out.println("#1 b2 lock type2");
                 }
                 if (variables[v3].piece1Y == (y1-1) && b3){
-                    updateDomain(1,v3);
+                    if (variables[v3].piece1X == x1){
+                        updateDomain(1,v3);
+                        System.out.println("match");
+                    }
+                    else if (variables[v3].piece2X == x1){
+                        updateDomain(2,v3);
+                        System.out.println("not match");
+                    }
+                    System.out.println("#1 b3 lock type1");
                 }else if(variables[v3].piece2Y == (y1-1) && b3){
                     updateDomain(2,v3);
+                    System.out.println("#1 b3 lock type2");
                 }
                 if(variables[v4].piece1Y == (y1+1) && b4){
-                    updateDomain(1,v4);
+                    if (variables[v4].piece1X == x1){
+                        updateDomain(1,v4);
+                        System.out.println("match");
+                    }
+                    else if (variables[v4].piece2X == x1){
+                        updateDomain(2,v4);
+                        System.out.println("not match");
+                    }
+                    System.out.println("#1 b4 lock type1");
                 }else if (variables[v4].piece2Y == (y1+1) && b4){
                     updateDomain(2,v4);
+                    System.out.println("#1 b4 lock type2");
                 }
                 if (variables[v5].piece1Y == (y2-1) && b5){
-                    updateDomain(2,v5);
+                    if (variables[v5].piece1X == x2){
+                        updateDomain(2,v5);
+                        System.out.println("match");
+                    }
+                    else if (variables[v5].piece2X == x2){
+                        updateDomain(1,v5);
+                        System.out.println("not match");
+                    }
+                    System.out.println("#1 b5 lock type1");
                 }else if(variables[v5].piece2Y == (y2-1) && b5){
                     updateDomain(1,v5);
+                    System.out.println("#1 b5 lock type2");
                 }
                 if(variables[v6].piece1Y == (y2+1) && b6){
-                    updateDomain(1,v6);
+                    if (variables[v6].piece1X == x2){
+                        updateDomain(2,v6);
+                        System.out.println("match");
+                    }
+                    else if (variables[v6].piece2X == x2){
+                        updateDomain(1,v6);
+                        System.out.println("not match");
+                    }
+                    System.out.println("#1 b6 lock type1");
                 }else if(variables[v6].piece2Y == (y2+1) &&b6){
                     updateDomain(2,v6);
+                    System.out.println("#1 b6 lock type2");
                 }
             }else if (domain_value == 2){ // (+,-)
                 if (variables[v1].piece1X == (x1-1) && b1){
-                    updateDomain(2,v1);
+                    if (variables[v1].piece1Y == y1){
+                        updateDomain(2,v1);
+                        System.out.println("match");
+                    }
+                    else if (variables[v1].piece2Y == y1){
+                        updateDomain(1,v1);
+                        System.out.println("not match");
+                    }
+                    System.out.println("#2 b1 lock type1");
                 }else if(variables[v1].piece2X == (x1-1) && b1) {
                     updateDomain(1,v1);
+                    System.out.println("#2 b1 lock type2");
                 }
                 if (variables[v2].piece1X == (x2+1) && b2){
-                    updateDomain(1,v2);
+                    if (variables[v2].piece1Y == y2){
+                        updateDomain(1,v2);
+                        System.out.println("match");
+                    }
+                    else if (variables[v2].piece2Y == y2){
+                        updateDomain(2,v2);
+                        System.out.println("not match");
+                    }
+                    System.out.println("#2 b2 lock type1");
                 }else if(variables[v2].piece2X == (x2+1) && b2){
                     updateDomain(2,v2);
+                    System.out.println("#2 b2 lock type2");
                 }
                 if (variables[v3].piece1Y == (y1-1) && b3){
-                    updateDomain(2,v3);
+                    if (variables[v3].piece1X == x1){
+                        updateDomain(2,v3);
+                        System.out.println("match");
+                    }
+                    else if (variables[v3].piece2X == x1){
+                        updateDomain(1,v3);
+                        System.out.println("not match");
+                    }
+                    System.out.println("#2 b1 lock type1");
                 }else if(variables[v3].piece2Y == (y1-1) && b3){
                     updateDomain(1,v3);
+                    System.out.println("#2 b3 lock type2");
                 }
                 if(variables[v4].piece1Y == (y1+1) && b4){
-                    updateDomain(2,v4);
+                    if (variables[v4].piece1X == x1){
+                        updateDomain(2,v4);
+                        System.out.println("match");
+                    }
+                    else if (variables[v4].piece2X == x1){
+                        updateDomain(1,v4);
+                        System.out.println("not match");
+                    }
+                    System.out.println("#2 b4 lock type1");
                 }else if (variables[v4].piece2Y == (y1+1) && b4){
                     updateDomain(1,v4);
+                    System.out.println("#2 b4 lock type2");
                 }
                 if (variables[v5].piece1Y == (y2-1) && b5){
-                    updateDomain(1,v5);
+                    if (variables[v5].piece1X == x2){
+                        updateDomain(1,v5);
+                        System.out.println("match");
+                    }
+                    else if (variables[v5].piece2X == x2){
+                        updateDomain(2,v5);
+                        System.out.println("not match");
+                    }
+                    System.out.println("#2 b5 lock type1");
                 }else if(variables[v5].piece2Y == (y2-1) && b5){
                     updateDomain(2,v5);
+                    System.out.println("#2 b5 lock type2");
                 }
                 if(variables[v6].piece1Y == (y2+1) && b6){
-                    updateDomain(2,v6);
+                    if (variables[v6].piece1X == x2){
+                        updateDomain(1,v6);
+                        System.out.println("match");
+                    }
+                    else if (variables[v6].piece2X == x2){
+                        updateDomain(2,v6);
+                        System.out.println("not match");
+                    }
+                    System.out.println("#2 b6 lock type1");
                 }else if(variables[v6].piece2Y == (y2+1) && b6){
                     updateDomain(1,v6);
+                    System.out.println("#2 b6 lock type2");
                 }
             }
         }else {
@@ -485,89 +604,203 @@ public class AI_Project3 {
             if (y1-1 >= 0){
                 v1 = TableOfValues[x1][y1-1].Variable;
                 b1 = true;
+                System.out.println("horizontal b1, var "+v1);
             }
             if (y2+1 < Columns){
                 v2 = TableOfValues[x2][y2+1].Variable;
                 b2 = true;
+                System.out.println("horizontal b2, var "+v2);
             }
             if (x1-1 >= 0){
                 v3 = TableOfValues[x1-1][y1].Variable;
                 b3 = true;
+                System.out.println("horizontal b3, var "+v3);
             }
             if (x1+1 < Rows){
                 v4 = TableOfValues[x1+1][y1].Variable;
                 b4 = true;
+                System.out.println("horizontal b4, var "+v4);
             }
             if (x2-1 >= 0){
                 v5 = TableOfValues[x2-1][y2].Variable;
                 b5 = true;
+                System.out.println("horizontal b5, var "+v5);
             }
             if (x2+1 < Rows){
                 v6 = TableOfValues[x2+1][y2].Variable;
                 b6 = true;
+                System.out.println("horizontal b6, var "+v6);
             }
             if (domain_value == 1){ // (+.-)
 
                 if (variables[v1].piece1Y == (y1-1) && b1){
-                    updateDomain(1,v1);
+                    if (variables[v1].piece1X == x1){
+                        updateDomain(1,v1);
+                        System.out.println("match");
+                    }
+                    else if (variables[v1].piece2X == x1){
+                        updateDomain(2,v1);
+                        System.out.println("not match");
+                    }
+                    System.out.println("#1 b1 lock type1");
                 }else if(variables[v1].piece2Y == (y1-1) && b1) {
                     updateDomain(2,v1);
+                    System.out.println("#1 b1 lock type2");
                 }
                 if (variables[v2].piece1Y == (y2+1) && b2){
-                    updateDomain(2,v2);
+                    if (variables[v2].piece1X == x2){
+                        updateDomain(2,v2);
+                        System.out.println("match");
+                    }
+                    else if (variables[v2].piece2X == x2){
+                        updateDomain(1,v2);
+                        System.out.println("not match");
+                    }
+                    System.out.println("#1 b2 lock type1");
                 }else if(variables[v2].piece2Y == (y2+1) && b2){
                     updateDomain(1,v2);
+                    System.out.println("#1 b2 lock type2");
                 }
                 if (variables[v3].piece1X == (x1-1) && b3){
-                    updateDomain(1,v3);
+                    if (variables[v3].piece1Y == y1){
+                        updateDomain(1,v3);
+                        System.out.println("match");
+                    }
+                    else if (variables[v3].piece2Y == y1){
+                        updateDomain(2,v3);
+                        System.out.println("not match");
+                    }
+                    System.out.println("#1 b3 lock type1");
                 }else if(variables[v3].piece2X == (x1-1) && b3){
                     updateDomain(2,v3);
+                    System.out.println("#1 b3 lock type2");
                 }
                 if(variables[v4].piece1X == (x1+1) && b4){
-                    updateDomain(1,v4);
+                    if (variables[v4].piece1Y == y1){
+                        updateDomain(1,v4);
+                        System.out.println("match");
+                    }
+                    else if (variables[v4].piece2Y == y1){
+                        updateDomain(2,v4);
+                        System.out.println("not match");
+                    }
+                    System.out.println("#1 b4 lock type1");
                 }else if (variables[v4].piece2X == (x1+1) && b4){
                     updateDomain(2,v4);
+                    System.out.println("#1 b4 lock type2");
                 }
                 if (variables[v5].piece1X == (x2-1) && b5){
-                    updateDomain(2,v5);
+                    if (variables[v5].piece1Y == y2){
+                        updateDomain(2,v5);
+                        System.out.println("match");
+                    }
+                    else if (variables[v5].piece2Y == y2){
+                        updateDomain(1,v5);
+                        System.out.println("not match");
+                    }
+                    System.out.println("#1 b5 lock type1");
                 }else if(variables[v5].piece2X == (x2-1) && b5){
                     updateDomain(1,v5);
+                    System.out.println("#1 b5 lock type2");
                 }
                 if(variables[v6].piece1X == (x2+1) && b6){
-                    updateDomain(1,v6);
+                    if (variables[v6].piece1Y == y2){
+                        updateDomain(2,v6);
+                        System.out.println("match");
+                    }
+                    else if (variables[v6].piece2Y == y2){
+                        updateDomain(1,v6);
+                        System.out.println("not match");
+                    }
+                    System.out.println("#1 b6 lock type1");
                 }else if(variables[v6].piece2X == (x2+1) && b6){
                     updateDomain(2,v6);
+                    System.out.println("#1 b6 lock type2");
                 }
-            }else if (domain_value == 2){ // (+,-)
+            }else if (domain_value == 2){ // (-,+)
                 if (variables[v1].piece1Y == (y1-1) && b1){
-                    updateDomain(2,v1);
+                    if (variables[v1].piece1X == x1){
+                        updateDomain(2,v1);
+                        System.out.println("match");
+                    }
+                    else if (variables[v1].piece2X == x1){
+                        updateDomain(1,v1);
+                        System.out.println("not match");
+                    }
+                    System.out.println("#2 b1 lock type1");
                 }else if(variables[v1].piece2Y == (y1-1) && b1) {
                     updateDomain(1,v1);
+                    System.out.println("#2 b1 lock type2");
                 }
                 if (variables[v2].piece1Y == (y2+1) && b2){
-                    updateDomain(1,v2);
+                    if (variables[v2].piece1X == x2){
+                        updateDomain(1,v2);
+                        System.out.println("match");
+                    }
+                    else if (variables[v2].piece2X == x2){
+                        updateDomain(2,v2);
+                        System.out.println("not match");
+                    }
+                    System.out.println("#2 b2 lock type1");
                 }else if(variables[v2].piece2Y == (y2+1) && b2){
                     updateDomain(2,v2);
+                    System.out.println("#2 b2 lock type2");
                 }
                 if (variables[v3].piece1X == (x1-1) && b3){
-                    updateDomain(2,v3);
+                    if (variables[v3].piece1Y == y1){
+                        updateDomain(2,v3);
+                        System.out.println("match");
+                    }
+                    else if (variables[v3].piece2Y == y1){
+                        updateDomain(1,v3);
+                        System.out.println("not match");
+                    }
+                    System.out.println("#2 b3 lock type1");
                 }else if(variables[v3].piece2X == (x1-1) && b3){
                     updateDomain(1,v3);
+                    System.out.println("#2 b3 lock type2");
                 }
                 if(variables[v4].piece1X == (x1+1) && b4){
-                    updateDomain(2,v4);
+                    if (variables[v4].piece1Y == y1){
+                        updateDomain(2,v4);
+                        System.out.println("match");
+                    }
+                    else if (variables[v4].piece2Y == y1){
+                        updateDomain(1,v4);
+                        System.out.println("not match");
+                    }
+                    System.out.println("#2 b4 lock type1");
                 }else if (variables[v4].piece2X == (x1+1) && b4){
                     updateDomain(1,v4);
+                    System.out.println("#2 b4 lock type2");
                 }
                 if (variables[v5].piece1X == (x2-1) && b5){
-                    updateDomain(1,v5);
+                    if (variables[v5].piece1Y == y2){
+                        updateDomain(1,v5);
+                        System.out.println("match");
+                    }
+                    else if (variables[v5].piece2Y == y2){
+                        updateDomain(2,v5);
+                        System.out.println("not match");
+                    }
+                    System.out.println("#2 b5 lock type1");
                 }else if(variables[v5].piece2X == (x2-1) && b5){
                     updateDomain(2,v5);
+                    System.out.println("#2 b5 lock type2");
                 }
                 if(variables[v6].piece1X == (x2+1) && b6){
-                    updateDomain(2,v6);
+                    if (variables[v6].piece1Y == y2){
+                        updateDomain(1,v6);
+                        System.out.println("match");
+                    }
+                    else if (variables[v6].piece2Y == y2){
+                        updateDomain(2,v6);
+                        System.out.println("not match");
+                    }
+                    System.out.println("#2 b6 lock type1");
                 }else if(variables[v6].piece2X == (x2+1) && b6){
                     updateDomain(1,v6);
+                    System.out.println("#2 b6 lock type2");
                 }
             }
 
@@ -617,6 +850,10 @@ public class AI_Project3 {
     // TODO update Domain
     public static void updateDomain(int domain, int variable){
         Variable v = variables[variable];
+        if (v.Domain[domain] == 0){
+            System.out.println("domain "+domain+" of var "+variable+" is already 0");
+            return;
+        }
         v.Domain[domain] = 0;
     }
 
