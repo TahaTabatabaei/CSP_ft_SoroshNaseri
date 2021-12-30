@@ -290,7 +290,7 @@ public class AI_Project3 {
             if (variables[var].Domain[i] != 0 ){
 
                 int domainVar = variables[var].value ;
-                add(i   , var , TableOfValues);
+                add(i ,var);
                 //        System.out.println(variables[var].value);
                 boolean iop = isSati(var) ;
 
@@ -346,7 +346,7 @@ public class AI_Project3 {
         for (int i =0 ; i < 3 ; i++) {
             // TODO use value
             if (checkDomain(i,var1.whichVarInArray)){
-                add(i,var1.whichVarInArray,tableOfValues);
+                add_s(i,var1.whichVarInArray,tableOfValues);
                 System.out.println("consider domain "+i+" for var "+var1.whichVarInArray);
             }
             else {
@@ -357,7 +357,7 @@ public class AI_Project3 {
             for (int j = 0; j < 3; j++) {
                 if (checkDomain(j,var2.whichVarInArray)){
                     domainCounter++;
-                    add(j,var2.whichVarInArray,tableOfValues);
+                    add_s(j,var2.whichVarInArray,tableOfValues);
                     System.out.println("try domain "+j+" for var "+var2.whichVarInArray);
                     if (!satisfy_arc(var2.whichVarInArray)){
                         System.out.println("does not satisfy");
@@ -380,7 +380,7 @@ public class AI_Project3 {
     }
     public static void Forward(Variable currentVar, int domain_value){
         //Variable currentVar = minimum_remaining_value(variables);
-        add(domain_value,currentVar.whichVarInArray,TableOfValues);
+        add(domain_value,currentVar.whichVarInArray);
         System.out.println("got var "+currentVar.whichVarInArray+" with domain "+domain_value+"\n");
 
         int x1 = currentVar.piece1X;
@@ -819,7 +819,35 @@ public class AI_Project3 {
 
     // in this function we give a variable and one of its domains and the function
     // will change the variable
-    public static void   add (int Domain , int var, Piece[][] tableOfValues){
+    public static void   add (int Domain , int var){
+
+        if(Domain == 0 ) {
+            variables[var].value = 0  ;
+            variables[var].piece1 = "0"  ;
+            variables[var].piece2 = "0"  ;
+            TableOfValues[variables[var].piece1X][variables[var].piece1Y].value = "0" ;
+            TableOfValues[variables[var].piece2X][variables[var].piece2Y].value = "0" ;
+
+        }else{
+            if(Domain == 1) {
+                variables[var].value = 1 ;
+                variables[var].piece1 = "+"  ;
+                variables[var].piece2 = "-"  ;
+                TableOfValues[variables[var].piece1X][variables[var].piece1Y].value = "+" ;
+                TableOfValues[variables[var].piece2X][variables[var].piece2Y].value = "-" ;
+            }else{
+                if(Domain == 2 ){
+                    variables[var].value = 2 ;
+                    variables[var].piece1 = "-"  ;
+                    variables[var].piece2 = "+"  ;
+                    TableOfValues[variables[var].piece1X][variables[var].piece1Y].value = "-" ;
+                    TableOfValues[variables[var].piece2X][variables[var].piece2Y].value = "+" ;
+                }
+            }
+        }
+    }
+
+    public static void   add_s (int Domain , int var, Piece[][] tableOfValues){
 
         if(Domain == 0 ) {
             variables[var].value = 0  ;
