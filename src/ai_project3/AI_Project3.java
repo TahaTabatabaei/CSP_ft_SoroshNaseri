@@ -87,7 +87,7 @@ public class AI_Project3 {
             variables[u] = new Variable() ;
         }
         int counter1 = 0 ;
-        int pp [] = new int [numberOfVariable] ;
+        int[] pp = new int [numberOfVariable] ;
 
         for(int i = 0  ; i < Rows ; i ++ ){
             for(int j = 0; j < Columns; j ++ ) {
@@ -144,7 +144,7 @@ public class AI_Project3 {
 //        }
 
         boolean i = Backtracking() ;
-        if(i == true){
+        if(i){
 
             for (int ioo = 0  ; ioo < Rows ; ioo ++ ){
                 for(int j = 0; j < Columns; j ++){
@@ -317,7 +317,7 @@ public class AI_Project3 {
                 boolean iop = isSati(var) ;
 
                 if( iop){
-                    int firstDomain [][] = new int [variables.length][3] ;
+                    int[][] firstDomain = new int [variables.length][3] ;
                     for(int it = 0   ; it < variables.length ; it ++ ) {
                         for(int ll = 0; ll < 3 ; ll ++ ){
                             firstDomain[it][ll] = variables[it].Domain[ll] ;
@@ -331,7 +331,7 @@ public class AI_Project3 {
 
 
 
-                    if(result == true){
+                    if(result){
                         return true ;
                     }
                     for(int it = 0   ; it < variables.length ; it ++ ) {
@@ -938,7 +938,7 @@ public class AI_Project3 {
         int variable = -1 ;
         LinkedList<Variable> var = new LinkedList() ;
         int min = 4 ;
-        // MRV Huristic : ......................................................
+        // MRV Heuristic : ......................................................
         for(int i = 0  ; i < sizeOfVariables ; i ++ ){
             if(variables[i].value == -1){
                 if(numberOfDomain(variables[i].Domain) < min){
@@ -960,7 +960,7 @@ public class AI_Project3 {
         if(var.size() == 1 ){
             return var.get(0).whichVarInArray ;
         }else{
-            // LCV Huristic ...................................................
+            // LCV Heuristic ...................................................
             int max = -1;
             Variable var1 = var.get(0)  ;
             for(int u = 0 ; u  < var.size() ; u ++ ){
@@ -1000,17 +1000,17 @@ public class AI_Project3 {
 
         for(int i = 0  ; i  < Rows ; i ++ ) {
             int positive = 0  ;
-            int negetive = 0 ;
+            int negative = 0 ;
             for(int j = 0; j < Columns; j ++ ) {
                 if (TableOfValues[i][j].value.equals("+")){
                     positive++ ;
                 }else{
                     if(TableOfValues[i][j].value.equals("-")){
-                        negetive ++ ;
+                        negative ++ ;
                     }
                 }
             }
-            if(PositivesInRows[i] != positive || NegativeInRows[i] != negetive){
+            if(PositivesInRows[i] != positive || NegativeInRows[i] != negative){
                 return false ;
             }
         }
@@ -1146,7 +1146,7 @@ public class AI_Project3 {
     }
 
     public static int number_Of_Variables_In_Row_NOHavea_assignment(int row){
-        int variable[] = new int [Rows*Columns/2] ;
+        int[] variable = new int [Rows*Columns/2] ;
         for(int i =  0 ; i < Columns ; i ++ ){
             variable[TableOfValues[row][i].Variable] =  1 ;
         }
@@ -1159,7 +1159,7 @@ public class AI_Project3 {
         return counter ;
     }
     public static int number_Of_Variables_In_Column__NOHavea_assignment(int column){
-        int variable[] = new int [Rows*Columns/2] ;
+        int[] variable = new int [Rows*Columns/2] ;
         for(int i =  0 ; i < Rows ; i ++ ){
             variable[TableOfValues[i][column].Variable] =  1 ;
         }
